@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Chefeea</string>
+
+    <!-- Strings used in Main Activity -->
+    <string name="surprise_button_text">Surprise me!</string>
+    <string name="ingredients_button_text">What can I cook?</string>
+    <string name="settings_button_description">Settings</string>
+    <string name="drawer_button_description">Menu</string>
+
+    <!-- Strings used in Drawer -->
+    <string name="drawer_header_icon_description">User photo</string>
+    <string name="drawer_header_title">My Kitchen</string>
+    <string name="drawer_content_fridge">Fridge</string>
+    <string name="drawer_content_recipes">Recipes</string>
+    <string name="drawer_content_shopping_list">Shopping List</string>
+    <string name="drawer_content_timer">Timer</string>
+
+    <string name="drawer_item_placeholder">Placeholder</string>
+</resources>

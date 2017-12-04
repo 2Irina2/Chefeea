@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/main_screen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.example.android.chefeea.MainActivity">
+
+        <Button
+            android:id="@+id/surprise_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_end"
+            android:layout_marginLeft="@dimen/margin_start"
+            android:layout_marginRight="@dimen/margin_end"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginTop="@dimen/surprise_button_margin_top"
+            android:text="@string/surprise_button_text"
+            android:textSize="@dimen/surprise_button_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/ingredients_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ingredients_button_margin_top"
+            android:text="@string/ingredients_button_text"
+            android:textSize="@dimen/ingredients_button_text_size"
+            app:layout_constraintEnd_toEndOf="@+id/surprise_button"
+            app:layout_constraintStart_toStartOf="@+id/surprise_button"
+            app:layout_constraintTop_toBottomOf="@+id/surprise_button" />
+
+        <ImageView
+            android:id="@+id/drawer_button"
+            android:layout_width="@dimen/menus_width"
+            android:layout_height="@dimen/menus_height"
+            android:layout_marginLeft="@dimen/margin_start"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginTop="@dimen/menus_margin_top"
+            android:contentDescription="@string/drawer_button_description"
+            android:src="@drawable/ic_menu_black_24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/settings_button"
+            android:layout_width="@dimen/menus_width"
+            android:layout_height="@dimen/menus_height"
+            android:layout_marginEnd="@dimen/margin_end"
+            android:layout_marginRight="@dimen/margin_end"
+            android:layout_marginTop="@dimen/menus_margin_top"
+            android:contentDescription="@string/settings_button_description"
+            android:src="@drawable/ic_settings_black_24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/drawer"
+        android:layout_width="@dimen/drawer_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/drawer_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/drawer_header_icon"
+                android:contentDescription="@string/drawer_header_icon_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_launcher_round" />
+
+            <TextView
+                android:id="@+id/drawer_header_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/drawer_header_title"
+                android:textAllCaps="true"
+                android:textSize="@dimen/drawer_header_title_size" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/drawer_content"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@android:color/background_light"
+            android:choiceMode="singleChoice" />
+    </LinearLayout>
+
+</android.support.v4.widget.DrawerLayout>
