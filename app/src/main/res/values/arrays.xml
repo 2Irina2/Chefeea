@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="settings_language_preference_entries">
+        <item>English</item>
+        <item>French</item>
+        <item>Romanian</item>
+    </array>
+
+    <array name="settings_language_preference_values">
+        <item>EN</item>
+        <item>FR</item>
+        <item>RO</item>
+    </array>
+    
+    <array name="settings_food_preference_entries">
+        <item>Vegetarian</item>
+        <item>Non-vegetarian</item>
+    </array>
+
+    <array name="settings_food_preference_values">
+        <item>VEG</item>
+        <item>NON-VEG</item>
+    </array>
+</resources>

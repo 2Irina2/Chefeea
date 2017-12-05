@@ -62,6 +62,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="61dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:text="TextView"
+            app:layout_constraintBottom_toTopOf="@+id/surprise_button"
+            app:layout_constraintStart_toStartOf="@+id/surprise_button"
+            android:layout_marginLeft="8dp" />
+
     </android.support.constraint.ConstraintLayout>
 
     <LinearLayout
@@ -98,7 +109,7 @@
 
         <ListView
             android:id="@+id/drawer_content"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/drawer_width"
             android:layout_height="match_parent"
             android:background="@android:color/background_light"
             android:choiceMode="singleChoice" />

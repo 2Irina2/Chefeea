@@ -16,4 +16,16 @@
     <string name="drawer_content_timer">Timer</string>
 
     <string name="drawer_item_placeholder">Placeholder</string>
+
+    <!-- Strings used in Settings Activity -->
+    <string name="settings_title">Settings</string>
+
+    <!-- Strings used in Preferences -->
+    <string name="language_preference_key">language_preference</string>
+    <string name="language_preference_title">Language</string>
+    <string name="language_preference_default_value">EN</string>
+
+    <string name="food_preference_key">food_preference</string>
+    <string name="food_preference_title">Preference</string>
+    <string name="food_preference_default_value">NON-VEG</string>
 </resources>

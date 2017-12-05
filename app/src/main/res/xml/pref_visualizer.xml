@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:key="@string/language_preference_key"
+        android:title="@string/language_preference_title"
+        android:defaultValue="@string/language_preference_default_value"
+        android:entries="@array/settings_language_preference_entries"
+        android:entryValues="@array/settings_language_preference_values"
+        />
+
+    <ListPreference
+        android:key="@string/food_preference_key"
+        android:title="@string/food_preference_title"
+        android:defaultValue="@string/food_preference_default_value"
+        android:entries="@array/settings_food_preference_entries"
+        android:entryValues="@array/settings_food_preference_values"/>
+
+</PreferenceScreen>
