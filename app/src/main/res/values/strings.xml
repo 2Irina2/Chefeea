@@ -10,12 +10,12 @@
     <!-- Strings used in Drawer -->
     <string name="drawer_header_icon_description">User photo</string>
     <string name="drawer_header_title">My Kitchen</string>
+    <string name="drawer_content_home">Home</string>
     <string name="drawer_content_fridge">Fridge</string>
     <string name="drawer_content_recipes">Recipes</string>
     <string name="drawer_content_shopping_list">Shopping List</string>
     <string name="drawer_content_timer">Timer</string>
-
-    <string name="drawer_item_placeholder">Placeholder</string>
+    <string name="drawer_list_icon_item_content_description">Icon for each drawer action</string>
 
     <!-- Strings used in Settings Activity -->
     <string name="settings_title">Settings</string>
@@ -28,4 +28,17 @@
     <string name="food_preference_key">food_preference</string>
     <string name="food_preference_title">Preference</string>
     <string name="food_preference_default_value">NON-VEG</string>
+
+    <!-- Strings used in Recipe Activity -->
+    <string name="recipe_title">Recipe</string>
+    <string name="recipe_photo_content_description">Dish photo</string>
+    <string name="recipe_easy_content_description">Dish difficulty: easy</string>
+    <string name="recipe_medium_content_description">Dish difficulty: medium</string>
+    <string name="recipe_hard_content_description">Dish difficulty: hard</string>
+    <string name="recipe_time_content_description">Recipe preparation time</string>
+    <string name="recipe_ingredients_label_text">Ingredients</string>
+    <string name="recipe_preparation_label_text">Preparation</string>
+    <string name="recipe_button_text">Finished it!</string>
+    <string name="recipe_ingredient_tick_content_description">User has this ingredient in their Fridge</string>
+    <string name="recipe_intent_key">recipe</string>
 </resources>

@@ -20,8 +20,17 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/settings_title"
-            android:parentActivityName="com.example.android.chefeea.MainActivity"
             android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity"
+            tools:targetApi="jelly_bean">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.android.chefeea.MainActivity" />
+        </activity>
+        <activity
+            android:name=".RecipeActivity"
+            android:label="@string/recipe_title"
+            android:parentActivityName=".MainActivity"
             tools:targetApi="jelly_bean">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

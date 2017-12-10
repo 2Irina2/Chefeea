@@ -6,20 +6,22 @@
     android:orientation="horizontal"
     android:paddingLeft="@dimen/drawer_item_padding"
     android:paddingRight="@dimen/drawer_item_padding"
-    android:paddingTop="@dimen/drawer_item_padding">
+    android:paddingTop="@dimen/drawer_item_padding"
+    tools:ignore="UseCompoundDrawables">
 
     <ImageView
-        android:id="@+id/drawer_item_icon"
+        android:contentDescription="@string/drawer_list_icon_item_content_description"
+        android:id="@+id/list_item_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_menu_black_24dp" />
 
     <TextView
-        android:id="@+id/drawer_item_text"
+        android:id="@+id/list_item_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/drawer_item_text_size"
-        tools:text="@string/drawer_item_placeholder"
+        tools:text="Placeholder"
         android:paddingLeft="@dimen/drawer_item_padding"
         android:paddingStart="@dimen/drawer_item_padding"
         android:paddingRight="@dimen/drawer_item_padding"

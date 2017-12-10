@@ -1,18 +1,23 @@
-package com.example.android.chefeea;
+package com.example.android.chefeea.Classes;
 
 /**
- * Created by irina on 03.12.2017.
+ * Created by irina on 09.12.2017.
  */
 
-public class DrawerItem {
+public class IconListItem {
 
-    String itemName;
-    int imgResId;
+    private String itemName;
+    private int imgResId = 0;
 
-    public DrawerItem(String itemNameParam, int imgResIdParam){
+    public IconListItem(String itemNameParam, int imgResIdParam){
         super();
         itemName = itemNameParam;
         imgResId = imgResIdParam;
+    }
+
+    public IconListItem(String itemNameParam){
+        super();
+        itemName = itemNameParam;
     }
 
     public String getItemName(){
@@ -30,7 +35,4 @@ public class DrawerItem {
     public void setImgResId(int ImgResId){
         imgResId = ImgResId;
     }
-
-
-
 }

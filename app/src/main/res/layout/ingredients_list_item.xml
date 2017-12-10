@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="UseCompoundDrawables">
+
+    <TextView
+        android:id="@+id/list_item_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="tomato"
+        android:textSize="@dimen/recipe_ingredient_text_size"
+        android:paddingTop="@dimen/recipe_ingredient_padding_top"
+        android:paddingBottom="@dimen/recipe_ingredient_padding_bottom"
+        android:paddingLeft="@dimen/recipe_ingredient_padding_left"
+        android:paddingStart="@dimen/recipe_ingredient_padding_left"
+        android:paddingRight="@dimen/recipe_ingredient_padding_right"
+        android:paddingEnd="@dimen/recipe_ingredient_padding_right"
+        />
+
+    <ImageView
+        android:contentDescription="@string/recipe_ingredient_tick_content_description"
+        android:id="@+id/list_item_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/recipe_ingredient_tick_padding"
+        android:paddingBottom="@dimen/recipe_ingredient_tick_padding"
+        android:src="@drawable/ic_check_black_24dp"/>
+
+</LinearLayout>
