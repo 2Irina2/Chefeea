@@ -3,11 +3,14 @@ package com.example.android.chefeea;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -16,23 +19,26 @@ import android.widget.TextView;
 import com.example.android.chefeea.Adapters.IconListItemAdapter;
 import com.example.android.chefeea.Classes.IconListItem;
 import com.example.android.chefeea.Classes.Recipe;
+import com.example.android.chefeea.Fragments.FridgeFragment;
+import com.example.android.chefeea.Fragments.HomeFragment;
+import com.example.android.chefeea.Fragments.RecipesFragment;
+import com.example.android.chefeea.Fragments.ShoppingListFragment;
+import com.example.android.chefeea.Fragments.TimerFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 public class MainActivity extends AppCompatActivity {
 
-    private DrawerLayout mDrawerLayout;
+    public DrawerLayout mDrawerLayout;
     private ListView mDrawerContentList;
-    private ImageView mMenuToggler;
-    private ImageView mSettingsToggler;
-    private Button mSurpriseRecipeButton;
-    private Button mIngredientsRecipeButton;
 
     private TextView debugPreferenceTextView;
 
     IconListItemAdapter mDrawerAdapter;
     List<IconListItem> mDrawerItemsList;
+    int currentFragmentNumber = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,52 +47,12 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mDrawerContentList = findViewById(R.id.drawer_content);
-        mMenuToggler = findViewById(R.id.drawer_button);
-        mSettingsToggler = findViewById(R.id.settings_button);
-        mSurpriseRecipeButton = findViewById(R.id.surprise_button);
-        mIngredientsRecipeButton = findViewById(R.id.ingredients_button);
-
-        String[] ingredients1 = new String[]{"banana", "capsicum", "nutella"};
-        String[] preparation1 = new String[]{"1. asdfg", "2. qwertyu", "3. zxcvb"};
-        String[] ingredients2 = new String[]{"tomato", "tomato", "tomato", "tomato", "tomato"};
-        String[] preparation2 = new String[]{"1. mnbvcx", "2. lkjhgf", "3. poiuyt"};
-        final Recipe recipeSurprise = new Recipe("Surprise", R.drawable.anaconda_windows_6,
-                "30'", ingredients1, preparation1);
-        final Recipe recipeIngredients = new Recipe("Ingredients", R.drawable.anaconda_windows_6,
-                "300'", ingredients2, preparation2);
 
         initializeDrawer();
 
+        selectDrawerItem(currentFragmentNumber);
+
         setupSharedPreferences();
-
-        mSettingsToggler.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent settingsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
-                startActivity(settingsIntent);
-            }
-        });
-
-        mSurpriseRecipeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent surpriseIntent = new Intent(getApplicationContext(), RecipeActivity.class);
-                surpriseIntent.putExtra(getResources().getString(R.string.recipe_intent_key),
-                        recipeSurprise);
-                startActivity(surpriseIntent);
-            }
-        });
-
-        mIngredientsRecipeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent ingredientsIntent = new Intent(getApplicationContext(), RecipeActivity.class);
-                ingredientsIntent.putExtra(getResources().getString(R.string.recipe_intent_key),
-                        recipeIngredients);
-                startActivity(ingredientsIntent);
-            }
-        });
-
     }
 
     private void initializeDrawer(){
@@ -106,16 +72,13 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawerAdapter = new IconListItemAdapter(this, R.layout.drawer_list_item, mDrawerItemsList);
         mDrawerContentList.setAdapter(mDrawerAdapter);
-
+        mDrawerContentList.setOnItemClickListener(new DrawerItemClickListener());
 
         mDrawerLayout.closeDrawer(Gravity.START);
-        mMenuToggler.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mDrawerLayout.openDrawer(Gravity.START
-                );
-            }
-        });
+    }
+
+    public void openDrawer(){
+        mDrawerLayout.openDrawer(Gravity.START);
     }
 
     private void setupSharedPreferences(){
@@ -134,14 +97,62 @@ public class MainActivity extends AppCompatActivity {
         //TODO(3): Update fridge once a recipe is cooked preference
     }
 
+    public void selectDrawerItem(int positon){
+
+        Fragment fragment = null;
+
+        switch (positon){
+            case 0:
+                fragment = new HomeFragment();
+                break;
+            case 1:
+                fragment = new FridgeFragment();
+                break;
+            case 2:
+                fragment = new RecipesFragment();
+                break;
+            case 3:
+                fragment = new ShoppingListFragment();
+                break;
+            case 4:
+                fragment = new TimerFragment();
+                break;
+            default:
+                break;
+        }
+
+        currentFragmentNumber = positon;
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment)
+                .commit();
+
+        getSupportActionBar().setTitle(mDrawerItemsList.get(positon).getItemName());
+        mDrawerLayout.closeDrawer(Gravity.START);
+        mDrawerContentList.setItemChecked(positon, true);
+
+    }
+
     @Override
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(Gravity.START
         )) {
             mDrawerLayout.closeDrawer(Gravity.START
             );
-        } else {
+        }
+        else if(currentFragmentNumber != 0){
+            selectDrawerItem(0);
+            currentFragmentNumber = 0;
+        }
+        else {
             super.onBackPressed();
+        }
+    }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener{
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            selectDrawerItem(i);
         }
     }
 }
