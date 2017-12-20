@@ -41,4 +41,15 @@
     <string name="recipe_button_text">Finished it!</string>
     <string name="recipe_ingredient_tick_content_description">User has this ingredient in their Fridge</string>
     <string name="recipe_intent_key">recipe</string>
+
+    <!-- Strings used in Shopping List -->
+    <string name="shopping_list_dialog_hint_ingredient">Ingredient</string>
+    <string name="shopping_list_dialog_hint_quantity">Qty</string>
+
+    <string name="shopping_list_dialog_title">Add ingredient</string>
+    <string name="shopping_list_dialog_positive_button">Done</string>
+    <string name="shopping_list_dialog_negative_button">Cancel</string>
+    <string name="shopping_list_dialog_positie_toast">Ingredient added</string>
+    <string name="shopping_list_dialog_negative_toast">No changes were made to the shopping list</string>
+    <string name="shopping_list_dialog_exception_data">Exception at dialog data retrieval</string>
 </resources>

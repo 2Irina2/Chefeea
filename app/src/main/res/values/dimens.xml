@@ -49,4 +49,20 @@
     <dimen name="recipe_preparation_padding_bottom">8dp</dimen>
     <dimen name="recipe_preparation_padding_left">24dp</dimen>
     <dimen name="recipe_preparation_padding_right">16dp</dimen>
+
+    <!-- Dimensions used in Shopping List -->
+    <dimen name="shopping_list_item_pading_top">16dp</dimen>
+    <dimen name="shopping_list_item_pading_left">16dp</dimen>
+    <dimen name="shopping_list_item_pading_right">16dp</dimen>
+    <dimen name="shopping_list_item_ingredient_width">0dp</dimen>
+    <dimen name="shopping_list_item_quantity_width">0dp</dimen>
+    <dimen name="shopping_list_item_ingredient_text_size">24sp</dimen>
+    <dimen name="shopping_list_item_quantity_text_size">16sp</dimen>
+    <dimen name="shopping_list_item_quantity_padding_left">8dp</dimen>
+    <dimen name="shopping_list_item_quantity_padding_right">8dp</dimen>
+    <dimen name="shopping_list_fab_margin_bottom">16dp</dimen>
+    <dimen name="shopping_list_fab_margin_right">16dp</dimen>
+
+    <dimen name="shopping_list_dialog_ingredient_width">0dp</dimen>
+    <dimen name="shopping_list_dialog_quantity_width">0dp</dimen>
 </resources>

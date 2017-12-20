@@ -50,11 +50,11 @@ public class RecipeActivity extends AppCompatActivity {
                 }
             }
             IconListItemAdapter ingredientsAdapter = new IconListItemAdapter(this,
-                    R.layout.ingredients_list_item, ingredientsList);
+                    R.layout.recipe_ingredients_list_item, ingredientsList);
             ingredientsListView.setAdapter(ingredientsAdapter);
 
             ArrayAdapter<String> preparationAdapter = new ArrayAdapter<String>(this,
-                    R.layout.preparation_list_item, preparation);
+                    R.layout.recipe_preparation_list_item, preparation);
             preparationListView.setAdapter(preparationAdapter);
 
 

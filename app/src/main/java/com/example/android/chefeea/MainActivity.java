@@ -1,6 +1,5 @@
 package com.example.android.chefeea;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -11,14 +10,11 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.android.chefeea.Adapters.IconListItemAdapter;
 import com.example.android.chefeea.Classes.IconListItem;
-import com.example.android.chefeea.Classes.Recipe;
 import com.example.android.chefeea.Fragments.FridgeFragment;
 import com.example.android.chefeea.Fragments.HomeFragment;
 import com.example.android.chefeea.Fragments.RecipesFragment;
@@ -27,7 +23,6 @@ import com.example.android.chefeea.Fragments.TimerFragment;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,22 +35,33 @@ public class MainActivity extends AppCompatActivity {
     List<IconListItem> mDrawerItemsList;
     int currentFragmentNumber = 0;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mDrawerLayout = findViewById(R.id.drawer_layout);
-        mDrawerContentList = findViewById(R.id.drawer_content);
-
         initializeDrawer();
 
-        selectDrawerItem(currentFragmentNumber);
-
         setupSharedPreferences();
+
     }
 
+    /**
+     * DRAWER RELATED FUNCTIONS
+     *
+     * initializeDrawer     creates the layout, sets the Adapter and OnItemClickListener and
+     *                      calls selectDrawerItem(0);
+     *
+     * selectDrawerItem     function to navigate through drawer items / fragments;
+     *
+     * openDrawer           function called from other fragments to open or close drawer;
+     *
+     */
+
     private void initializeDrawer(){
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        mDrawerContentList = findViewById(R.id.drawer_content);
 
         mDrawerItemsList = new ArrayList<IconListItem>();
 
@@ -75,26 +81,8 @@ public class MainActivity extends AppCompatActivity {
         mDrawerContentList.setOnItemClickListener(new DrawerItemClickListener());
 
         mDrawerLayout.closeDrawer(Gravity.START);
-    }
 
-    public void openDrawer(){
-        mDrawerLayout.openDrawer(Gravity.START);
-    }
-
-    private void setupSharedPreferences(){
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String debugText =  preferences.getString(
-                getResources().getString(R.string.language_preference_key),
-                getResources().getString(R.string.language_preference_default_value));
-
-        debugText = debugText + " " +  preferences.getString(
-                getResources().getString(R.string.food_preference_key),
-                getResources().getString(R.string.food_preference_default_value));
-
-
-        //TODO(1): Add allergy preference
-        //TODO(2): Add color theme preference
-        //TODO(3): Update fridge once a recipe is cooked preference
+        selectDrawerItem(currentFragmentNumber);
     }
 
     public void selectDrawerItem(int positon){
@@ -132,6 +120,43 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void openDrawer(){
+        mDrawerLayout.openDrawer(Gravity.START);
+    }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener{
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            selectDrawerItem(i);
+        }
+    }
+
+
+    /**
+     * SHARED PREFERENCES RELATED FUNCTIONS
+     *
+     * setupSharedPreferences   reads data from shared preferences
+     *
+     */
+
+    private void setupSharedPreferences(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String debugText =  preferences.getString(
+                getResources().getString(R.string.language_preference_key),
+                getResources().getString(R.string.language_preference_default_value));
+
+        debugText = debugText + " " +  preferences.getString(
+                getResources().getString(R.string.food_preference_key),
+                getResources().getString(R.string.food_preference_default_value));
+
+
+        //TODO(1): Add allergy preference
+        //TODO(2): Add color theme preference
+        //TODO(3): Update fridge once a recipe is cooked preference
+    }
+
+
     @Override
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(Gravity.START
@@ -145,14 +170,6 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             super.onBackPressed();
-        }
-    }
-
-    private class DrawerItemClickListener implements ListView.OnItemClickListener{
-
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            selectDrawerItem(i);
         }
     }
 }

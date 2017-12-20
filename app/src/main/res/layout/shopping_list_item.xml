@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/shopping_list_item_pading_top"
+    android:paddingLeft="@dimen/shopping_list_item_pading_left"
+    android:paddingStart="@dimen/shopping_list_item_pading_left"
+    android:paddingRight="@dimen/shopping_list_item_pading_right"
+    android:paddingEnd="@dimen/shopping_list_item_pading_right">
+
+    <TextView
+        android:id="@+id/shopping_list_item_name"
+        android:layout_width="@dimen/shopping_list_item_ingredient_width"
+        android:layout_weight="3"
+        android:layout_height="wrap_content"
+        tools:text="shopping list ingredient"
+        android:textSize="@dimen/shopping_list_item_ingredient_text_size"
+        />
+
+    <TextView
+        android:id="@+id/shopping_list_item_quantity"
+        android:layout_width="@dimen/shopping_list_item_quantity_width"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        tools:text="5"
+        android:textSize="@dimen/shopping_list_item_quantity_text_size"
+        android:gravity="end"
+        android:paddingRight="@dimen/shopping_list_item_quantity_padding_right"
+        android:paddingEnd="@dimen/shopping_list_item_quantity_padding_right"
+        android:paddingLeft="@dimen/shopping_list_item_quantity_padding_left"
+        android:paddingStart="@dimen/shopping_list_item_quantity_padding_left"/>
+
+</LinearLayout>

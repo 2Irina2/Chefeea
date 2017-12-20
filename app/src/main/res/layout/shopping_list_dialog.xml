@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <EditText
+        android:id="@+id/shopping_list_dialog_name"
+        android:layout_width="@dimen/shopping_list_dialog_ingredient_width"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:hint="@string/shopping_list_dialog_hint_ingredient"/>
+
+    <EditText
+        android:id="@+id/shopping_list_dialog_quantity"
+        android:layout_width="@dimen/shopping_list_dialog_quantity_width"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="@string/shopping_list_dialog_hint_quantity"
+        android:inputType="number"/>
+
+</LinearLayout>
