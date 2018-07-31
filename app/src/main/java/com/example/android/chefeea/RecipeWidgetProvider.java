@@ -13,6 +13,7 @@ import com.example.android.chefeea.Classes.RecipeWidgetRemoteViewsService;
 
 /**
  * Implementation of App Widget functionality.
+ * Listview implementation from https://github.com/commonsguy/cw-omnibus/tree/master/AppWidget
  */
 public class RecipeWidgetProvider extends AppWidgetProvider {
 
