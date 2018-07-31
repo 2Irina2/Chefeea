@@ -11,15 +11,12 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.android.chefeea.Adapters.IconListItemAdapter;
 import com.example.android.chefeea.Classes.IconListItem;
-import com.example.android.chefeea.Fragments.FridgeFragment;
 import com.example.android.chefeea.Fragments.HomeFragment;
 import com.example.android.chefeea.Fragments.RecipesFragment;
 import com.example.android.chefeea.Fragments.ShoppingListFragment;
-import com.example.android.chefeea.Fragments.TimerFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
     public DrawerLayout mDrawerLayout;
     private ListView mDrawerContentList;
-
-    private TextView debugPreferenceTextView;
 
     IconListItemAdapter mDrawerAdapter;
     List<IconListItem> mDrawerItemsList;
@@ -41,10 +36,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if(savedInstanceState != null){
+            currentFragmentNumber = savedInstanceState.getInt("fragmentIndex");
+        }
+
         initializeDrawer();
 
         setupSharedPreferences();
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("fragmentIndex", currentFragmentNumber);
     }
 
     /**
@@ -63,17 +68,13 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mDrawerContentList = findViewById(R.id.drawer_content);
 
-        mDrawerItemsList = new ArrayList<IconListItem>();
+        mDrawerItemsList = new ArrayList<>();
 
         mDrawerItemsList.add(new IconListItem(getResources().getString(R.string.drawer_content_home),
-                R.drawable.ic_settings_black_24dp));
-        mDrawerItemsList.add(new IconListItem(getResources().getString(R.string.drawer_content_fridge),
                 R.drawable.ic_settings_black_24dp));
         mDrawerItemsList.add(new IconListItem(getResources().getString(R.string.drawer_content_recipes),
                 R.drawable.ic_settings_black_24dp));
         mDrawerItemsList.add(new IconListItem(getResources().getString(R.string.drawer_content_shopping_list),
-                R.drawable.ic_settings_black_24dp));
-        mDrawerItemsList.add(new IconListItem(getResources().getString(R.string.drawer_content_timer),
                 R.drawable.ic_settings_black_24dp));
 
         mDrawerAdapter = new IconListItemAdapter(this, R.layout.drawer_list_item, mDrawerItemsList);
@@ -94,16 +95,10 @@ public class MainActivity extends AppCompatActivity {
                 fragment = new HomeFragment();
                 break;
             case 1:
-                fragment = new FridgeFragment();
-                break;
-            case 2:
                 fragment = new RecipesFragment();
                 break;
-            case 3:
+            case 2:
                 fragment = new ShoppingListFragment();
-                break;
-            case 4:
-                fragment = new TimerFragment();
                 break;
             default:
                 break;
@@ -153,7 +148,6 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO(1): Add allergy preference
         //TODO(2): Add color theme preference
-        //TODO(3): Update fridge once a recipe is cooked preference
     }
 
 
@@ -172,4 +166,5 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
 }

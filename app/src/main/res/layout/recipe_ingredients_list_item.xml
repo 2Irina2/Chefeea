@@ -20,14 +20,4 @@
         android:paddingRight="@dimen/recipe_ingredient_padding_right"
         android:paddingEnd="@dimen/recipe_ingredient_padding_right"
         />
-
-    <ImageView
-        android:contentDescription="@string/recipe_ingredient_tick_content_description"
-        android:id="@+id/list_item_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/recipe_ingredient_tick_padding"
-        android:paddingBottom="@dimen/recipe_ingredient_tick_padding"
-        android:src="@drawable/ic_check_black_24dp"/>
-
 </LinearLayout>

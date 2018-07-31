@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.chefeea.Classes.IngredientsViewHolder;
-import com.example.android.chefeea.Database.ChefeeaContract;
+import com.example.android.chefeea.Database.ShoppingListEntry;
+
+import java.util.List;
 
 /**
  * Created by irina on 14.12.2017.
@@ -15,11 +17,11 @@ import com.example.android.chefeea.Database.ChefeeaContract;
 
 public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsViewHolder> {
 
-    private Cursor mCursor;
     private int mLayoutResourceId;
+    private List<ShoppingListEntry> mIngredients;
 
-    public IngredientsAdapter(Cursor cursor, int layoutResourceId){
-        mCursor = cursor;
+    public IngredientsAdapter(List<ShoppingListEntry> ingredients, int layoutResourceId){
+        mIngredients = ingredients;
         mLayoutResourceId = layoutResourceId;
     }
 
@@ -33,38 +35,27 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsViewHold
 
     @Override
     public void onBindViewHolder(IngredientsViewHolder holder, int position) {
-        if(!mCursor.moveToPosition(position)){
-            return;
-        }
+        ShoppingListEntry shoppingListEntry = mIngredients.get(position);
+        String name = shoppingListEntry.getEntryName();
+        int quantity = shoppingListEntry.getQuantity();
+        int id = shoppingListEntry.getEntryId();
 
-        String ingredient = mCursor.getString(mCursor.getColumnIndex(
-                ChefeeaContract.ShoppingListEntry.COLUMN_INGREDIENT));
-        int quantity = mCursor.getInt(mCursor.getColumnIndex(
-                ChefeeaContract.ShoppingListEntry.COLUMN_QUANTITY));
-        String strQuantity = String.valueOf(quantity);
-
-        long id = mCursor.getLong(mCursor.getColumnIndex(ChefeeaContract.ShoppingListEntry._ID));
-
-        holder.mIngredientQuantity.setText(strQuantity);
-        holder.mIngredientName.setText(ingredient);
+        holder.mIngredientName.setText(name);
+        holder.mIngredientQuantity.setText(Integer.toString(quantity));
         holder.itemView.setTag(id);
     }
 
     @Override
     public int getItemCount() {
-        return mCursor.getCount();
+        return mIngredients.size();
     }
 
-    public void swapCursor(Cursor newCursor){
 
-        if(mCursor != null){
-            mCursor.close();
-        }
+    public void setIngredients(List<ShoppingListEntry> ingredientsParam){
+        mIngredients = ingredientsParam;
+    }
 
-        mCursor = newCursor;
-
-        if(newCursor != null){
-            this.notifyDataSetChanged();
-        }
+    public List<ShoppingListEntry> getIngredients(){
+        return mIngredients;
     }
 }

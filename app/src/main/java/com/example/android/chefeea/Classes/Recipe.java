@@ -2,6 +2,10 @@ package com.example.android.chefeea.Classes;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.widget.LinearLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by irina on 09.12.2017.
@@ -10,46 +14,44 @@ import android.os.Parcelable;
 public class Recipe implements Parcelable{
 
     private String mTitle;
-    private int mImgResourceId;
-    private String mPrepTime;
-    private String[] mIngredients;
-    private String[] mPreparation;
+    private String mImgUrl;
+    private int mPrepTime;
+    private List<String> mIngredients;
+    private String mUrl;
+    private List<String> mHealthLabels;
 
-    public Recipe(String title, int imgId, String prepTime, String[] ingredients, String[] preparation){
+
+    public Recipe(String title, String imgId, int prepTime, List<String> ingredients, String url, List<String> labels){
         mTitle = title;
-        mImgResourceId = imgId;
+        mImgUrl = imgId;
         mPrepTime = prepTime;
         mIngredients = ingredients;
-        mPreparation = preparation;
+        mUrl = url;
+        mHealthLabels = labels;
     }
-
-    public String getRecipeTitle(){
-        return mTitle;
-    }
-
-    public int getRecipeImgResourceId(){
-        return mImgResourceId;
-    }
-
-    public String getRecipePrepTime(){
-        return mPrepTime;
-    }
-
-    public String[] getRecipeIngredients(){
-        return mIngredients;
-    }
-
-    public String[] getRecipePreparation(){
-        return mPreparation;
-    }
-
 
     protected Recipe(Parcel in) {
         mTitle = in.readString();
-        mImgResourceId = in.readInt();
-        mPrepTime = in.readString();
-        mIngredients = in.createStringArray();
-        mPreparation = in.createStringArray();
+        mImgUrl = in.readString();
+        mPrepTime = in.readInt();
+        mIngredients = in.createStringArrayList();
+        mUrl = in.readString();
+        mHealthLabels = in.createStringArrayList();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mTitle);
+        dest.writeString(mImgUrl);
+        dest.writeInt(mPrepTime);
+        dest.writeStringList(mIngredients);
+        dest.writeString(mUrl);
+        dest.writeStringList(mHealthLabels);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
@@ -64,17 +66,25 @@ public class Recipe implements Parcelable{
         }
     };
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getRecipeTitle(){
+        return mTitle;
     }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(mTitle);
-        parcel.writeInt(mImgResourceId);
-        parcel.writeString(mPrepTime);
-        parcel.writeStringArray(mIngredients);
-        parcel.writeStringArray(mPreparation);
+    public String getRecipeUrl(){
+        return mImgUrl;
     }
+
+    public int getRecipePrepTime(){
+        return mPrepTime;
+    }
+
+    public List<String> getRecipeIngredients(){
+        return mIngredients;
+    }
+
+    public String getExtraUrl(){
+        return mUrl;
+    }
+
+    public List<String> getRecipeHealthLabels() { return mHealthLabels;}
 }

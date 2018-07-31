@@ -2,13 +2,11 @@ package com.example.android.chefeea.Fragments;
 
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.ContentValues;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
-import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -20,17 +18,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.android.chefeea.Adapters.IngredientsAdapter;
+import com.example.android.chefeea.Classes.AppExecutors;
+import com.example.android.chefeea.Classes.MainViewModel;
+import com.example.android.chefeea.Database.AppDatabase;
+import com.example.android.chefeea.Database.ShoppingListEntry;
 import com.example.android.chefeea.R;
-import com.example.android.chefeea.Database.ChefeeaContract;
-import com.example.android.chefeea.Database.ChefeeaDbHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,11 +36,9 @@ import java.util.List;
 
 public class ShoppingListFragment extends Fragment {
 
-
+    private AppDatabase mDb;
     private RecyclerView mRecyclerView;
     private IngredientsAdapter mRecyclerViewAdapter;
-
-    private SQLiteDatabase mDb;
 
     public ShoppingListFragment() {
 
@@ -51,18 +46,21 @@ public class ShoppingListFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_shopping_list, container, false);
+        final View view = inflater.inflate(R.layout.fragment_shopping_list, container, false);
 
-        ChefeeaDbHelper dbHelper = new ChefeeaDbHelper(getContext());
-        mDb = dbHelper.getWritableDatabase();
-        Cursor shoppingListCursor = getAllIngredients();
+        mDb = AppDatabase.getInstance(getContext());
 
-        wireUpRecyclerView(view, shoppingListCursor);
+        MainViewModel viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
+        viewModel.getEntries().observe(this, new Observer<List<ShoppingListEntry>>() {
+            @Override
+            public void onChanged(@Nullable List<ShoppingListEntry> shoppingListEntries) {
+                wireUpRecyclerView(view, shoppingListEntries);
+            }
+        });
 
-
-        FloatingActionButton mAddButton = view.findViewById(R.id.shopping_list_button);
+        final FloatingActionButton mAddButton = view.findViewById(R.id.shopping_list_button);
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,27 +69,38 @@ public class ShoppingListFragment extends Fragment {
         });
 
 
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
-                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
             }
 
+            // Called when a user swipes left or right on a ViewHolder
             @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-
-                long id = (long) viewHolder.itemView.getTag();
-                removeFromShoppingList(id);
-                mRecyclerViewAdapter.swapCursor(getAllIngredients());
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                // Here is where you'll implement swipe to delete
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        int position = viewHolder.getAdapterPosition();
+                        List<ShoppingListEntry> tasks = mRecyclerViewAdapter.getIngredients();
+                        mDb.shoppingListEntryDao().deleteEntry(tasks.get(position));
+                        MainViewModel viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
+                        viewModel.getEntries().observe(getActivity(), new Observer<List<ShoppingListEntry>>() {
+                            @Override
+                            public void onChanged(@Nullable List<ShoppingListEntry> shoppingListEntries) {
+                                wireUpRecyclerView(view, shoppingListEntries);
+                            }
+                        });
+                    }
+                });
             }
         }).attachToRecyclerView(mRecyclerView);
-
 
         return view;
     }
 
-    private void wireUpRecyclerView(View view, Cursor cursor) {
+    private void wireUpRecyclerView(View view, List<ShoppingListEntry> ingredients) {
 
         mRecyclerView = view.findViewById(R.id.shopping_list_recyclerview);
         mRecyclerView.setHasFixedSize(true);
@@ -100,7 +109,7 @@ public class ShoppingListFragment extends Fragment {
         linearLayoutManager.setOrientation(linearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mRecyclerViewAdapter = new IngredientsAdapter(cursor, R.layout.shopping_list_item);
+        mRecyclerViewAdapter = new IngredientsAdapter(ingredients, R.layout.shopping_list_item);
 
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
     }
@@ -130,9 +139,7 @@ public class ShoppingListFragment extends Fragment {
                             Log.e(ShoppingListFragment.class.getName(), getResources().getString(R.string.shopping_list_dialog_exception_data));
                         }
 
-                        long insertionResult = addToShoppingList(ingredient, quantity);
-
-                        mRecyclerViewAdapter.swapCursor(getAllIngredients());
+                        addToShoppingList(ingredient, quantity);
 
                         Toast toast = Toast.makeText(getContext(),
                                 getResources().getString(R.string.shopping_list_dialog_positie_toast),
@@ -153,29 +160,13 @@ public class ShoppingListFragment extends Fragment {
 
     }
 
-    private Cursor getAllIngredients() {
-        return mDb.query(
-                ChefeeaContract.ShoppingListEntry.TABLE_NAME,
-                null,
-                null,
-                null,
-                null,
-                null,
-                ChefeeaContract.ShoppingListEntry._ID
-        );
-    }
-
-    public long addToShoppingList(String ingredient, int quantity) {
-
-        ContentValues cv = new ContentValues();
-        cv.put(ChefeeaContract.ShoppingListEntry.COLUMN_INGREDIENT, ingredient);
-        cv.put(ChefeeaContract.ShoppingListEntry.COLUMN_QUANTITY, quantity);
-        return mDb.insert(ChefeeaContract.ShoppingListEntry.TABLE_NAME, null, cv);
-    }
-
-    private boolean removeFromShoppingList(long id) {
-        return mDb.delete(ChefeeaContract.ShoppingListEntry.TABLE_NAME,
-                ChefeeaContract.ShoppingListEntry._ID + " =" + id,
-                null) > 0;
+    public void addToShoppingList(String ingredient, int quantity) {
+        final ShoppingListEntry shoppingListEntry = new ShoppingListEntry(ingredient, quantity);
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.shoppingListEntryDao().insertEntry(shoppingListEntry);
+            }
+        });
     }
 }

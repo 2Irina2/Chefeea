@@ -43,18 +43,11 @@ public class IconListItemAdapter extends ArrayAdapter<IconListItem>  {
 
         listItemHolder = new ListItemHolder();
 
-        listItemHolder.Icon = view.findViewById(R.id.list_item_icon);
         listItemHolder.ItemName = view.findViewById(R.id.list_item_text);
 
         IconListItem item = iconListItemList.get(position);
 
         listItemHolder.ItemName.setText(item.getItemName());
-        if(item.getImgResId() == 0){
-            listItemHolder.Icon.setVisibility(View.GONE);
-        }
-        else{
-            listItemHolder.Icon.setImageResource(item.getImgResId());
-        }
 
         return view;
     }
