@@ -2,9 +2,7 @@ package com.example.android.chefeea.Fragments;
 
 
 import android.app.AlertDialog;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -23,12 +21,15 @@ import android.widget.Toast;
 
 import com.example.android.chefeea.Adapters.IngredientsAdapter;
 import com.example.android.chefeea.Classes.AppExecutors;
-import com.example.android.chefeea.Classes.MainViewModel;
+import com.example.android.chefeea.Classes.ShoppingListViewModel;
 import com.example.android.chefeea.Database.AppDatabase;
 import com.example.android.chefeea.Database.ShoppingListEntry;
 import com.example.android.chefeea.R;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by irina on 12.12.2017.
@@ -36,8 +37,10 @@ import java.util.List;
 
 public class ShoppingListFragment extends Fragment {
 
+    @BindView(R.id.shopping_list_recyclerview) RecyclerView mRecyclerView;
+    @BindView(R.id.shopping_list_button) FloatingActionButton mAddButton;
+
     private AppDatabase mDb;
-    private RecyclerView mRecyclerView;
     private IngredientsAdapter mRecyclerViewAdapter;
 
     public ShoppingListFragment() {
@@ -49,10 +52,10 @@ public class ShoppingListFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
         final View view = inflater.inflate(R.layout.fragment_shopping_list, container, false);
-
+        ButterKnife.bind(this, view);
         mDb = AppDatabase.getInstance(getContext());
 
-        MainViewModel viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
+        ShoppingListViewModel viewModel = ViewModelProviders.of(getActivity()).get(ShoppingListViewModel.class);
         viewModel.getEntries().observe(this, new Observer<List<ShoppingListEntry>>() {
             @Override
             public void onChanged(@Nullable List<ShoppingListEntry> shoppingListEntries) {
@@ -60,7 +63,6 @@ public class ShoppingListFragment extends Fragment {
             }
         });
 
-        final FloatingActionButton mAddButton = view.findViewById(R.id.shopping_list_button);
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,11 +87,12 @@ public class ShoppingListFragment extends Fragment {
                         int position = viewHolder.getAdapterPosition();
                         List<ShoppingListEntry> tasks = mRecyclerViewAdapter.getIngredients();
                         mDb.shoppingListEntryDao().deleteEntry(tasks.get(position));
-                        MainViewModel viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
+                        ShoppingListViewModel viewModel = ViewModelProviders.of(getActivity()).get(ShoppingListViewModel.class);
                         viewModel.getEntries().observe(getActivity(), new Observer<List<ShoppingListEntry>>() {
                             @Override
                             public void onChanged(@Nullable List<ShoppingListEntry> shoppingListEntries) {
-                                wireUpRecyclerView(view, shoppingListEntries);
+                                mRecyclerViewAdapter = new IngredientsAdapter(shoppingListEntries
+                                        , R.layout.shopping_list_item);
                             }
                         });
                     }
@@ -102,7 +105,6 @@ public class ShoppingListFragment extends Fragment {
 
     private void wireUpRecyclerView(View view, List<ShoppingListEntry> ingredients) {
 
-        mRecyclerView = view.findViewById(R.id.shopping_list_recyclerview);
         mRecyclerView.setHasFixedSize(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());

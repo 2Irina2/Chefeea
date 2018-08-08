@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'key0'
+            keyPassword 'keypassword'
+            storeFile file('$rootdir/keystore.jks')
+            storePassword 'keypassword'
+        }
+    }
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.example.android.chefeea"
@@ -14,6 +22,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
 }
@@ -34,5 +43,8 @@ dependencies {
     annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
     implementation 'android.arch.lifecycle:extensions:1.1.1'
     implementation 'com.google.android.gms:play-services-ads:15.0.1'
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.google.android.gms:play-services-analytics:16.0.1'
+    implementation 'com.google.code.gson:gson:2.8.5'
 }

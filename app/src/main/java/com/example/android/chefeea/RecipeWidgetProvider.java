@@ -6,9 +6,10 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.widget.RemoteViews;
 
-import com.example.android.chefeea.Classes.Recipe;
+import com.example.android.chefeea.Database.RecipeEntry;
 import com.example.android.chefeea.Classes.RecipeWidgetRemoteViewsService;
 
 /**
@@ -17,7 +18,7 @@ import com.example.android.chefeea.Classes.RecipeWidgetRemoteViewsService;
  */
 public class RecipeWidgetProvider extends AppWidgetProvider {
 
-    private static Recipe mRecipe;
+    private static RecipeEntry mRecipe;
 
     public static final String ACTION_UPDATE_INGREDIENTS = "ACTION_UPDATE_INGREDIENTS";
 
@@ -38,6 +39,8 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
         }
 
         Intent svcIntent=new Intent(context, RecipeWidgetRemoteViewsService.class);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
         views.setRemoteAdapter(R.id.appwidget_listView, svcIntent);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
@@ -80,7 +83,7 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
         if (ACTION_UPDATE_INGREDIENTS.equals(intent.getAction())) {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget_provider);
             mRecipe = intent.getParcelableExtra("recipe");
-            views.setTextViewText(R.id.appwidget_title, mRecipe.getRecipeIngredients().get(0));
+            views.setTextViewText(R.id.appwidget_title, mRecipe.getEntryIngredients().get(0));
             // This time we dont have widgetId. Reaching our widget with that way.
             ComponentName appWidget = new ComponentName(context, RecipeWidgetProvider.class);
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);

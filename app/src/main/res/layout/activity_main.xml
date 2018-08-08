@@ -16,6 +16,7 @@
         android:layout_gravity="start"
         android:orientation="vertical">
 
+        <!--
         <LinearLayout
             android:id="@+id/drawer_header"
             android:layout_width="match_parent"
@@ -39,7 +40,7 @@
                 android:textAllCaps="true"
                 android:textSize="@dimen/drawer_header_title_size" />
 
-        </LinearLayout>
+        </LinearLayout> -->
 
         <ListView
             android:id="@+id/drawer_content"

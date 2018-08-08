@@ -1,11 +1,9 @@
 package com.example.android.chefeea.Utils;
 
 import android.net.Uri;
-import android.os.Parcelable;
 import android.util.Log;
 
-import com.example.android.chefeea.Classes.Recipe;
-import com.example.android.chefeea.Fragments.HomeFragment;
+import com.example.android.chefeea.Database.RecipeEntry;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,7 +15,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -35,8 +32,8 @@ public class NetworkUtils {
     public static URL buildUrl(String queryParameter){
         Uri builtUri = Uri.parse(RANDOM_RECIPE_BASE_URL).buildUpon()
                 .appendQueryParameter(PARAM_QUERY, queryParameter)
-                .appendQueryParameter(PARAM_APP_ID, "69cdd674")
-                .appendQueryParameter(PARAM_APP_KEY, "05be882605627020f8a25ffb10040e7d")
+                .appendQueryParameter(PARAM_APP_ID, "INSERT APP ID HERE")
+                .appendQueryParameter(PARAM_APP_KEY, "INSERT APP KEY HERE")
                 .build();
 
         URL url = null;
@@ -72,32 +69,46 @@ public class NetworkUtils {
         }
     }
 
-    public static ArrayList<Recipe> parseJSONString(String jsonString) throws JSONException {
+    public static ArrayList<RecipeEntry> parseJSONString(String jsonString) throws JSONException {
         JSONObject response = new JSONObject(jsonString);
 
-        ArrayList<Recipe> recipes = new ArrayList<>();
+        ArrayList<RecipeEntry> recipes = new ArrayList<>();
 
-        JSONArray jsonHits = response.getJSONArray("hits");
-        for(int i = 0; i < jsonHits.length(); i++){
-            JSONObject jsonRecipe = jsonHits.getJSONObject(i).getJSONObject("recipe");
-            String jsonName = jsonRecipe.getString("label");
-            String jsonImage = jsonRecipe.getString("image");
-            int jsonTime = jsonRecipe.getInt("totalTime");
-            JSONArray jsonIngredients = jsonRecipe.getJSONArray("ingredientLines");
-            String jsonUrl = jsonRecipe.getString("url");
-            JSONArray jsonHealthLabels = jsonRecipe.getJSONArray("healthLabels");
+        if(response.has("hits") || response.getJSONArray("hits").length() == 0){
+            JSONArray jsonHits = response.getJSONArray("hits");
+            for(int i = 0; i < jsonHits.length(); i++){
+                if(jsonHits.getJSONObject(i).has("recipe")){
+                    JSONObject jsonRecipe = jsonHits.getJSONObject(i).getJSONObject("recipe");
+                    String jsonName = "N/A";
+                    if(jsonRecipe.has("label")){
+                        jsonName = jsonRecipe.getString("label");
+                    }
+                    String jsonImage = "N/A";
+                    if(jsonRecipe.has("image")){
+                        jsonImage = jsonRecipe.getString("image");
+                    }
+                    int jsonTime = 0;
+                    if(jsonRecipe.has("totalTime")){
+                        jsonTime = jsonRecipe.getInt("totalTime");
+                    }
+                    ArrayList<String> ingredients = new ArrayList<>();
+                    if(jsonRecipe.has("ingredientLines")){
+                        JSONArray jsonIngredients = jsonRecipe.getJSONArray("ingredientLines");
+                        for(int j = 0; j < jsonIngredients.length(); j++){
+                            ingredients.add(jsonIngredients.getString(j));
+                        }
+                    }
+                    String jsonUrl = "N/A";
+                    if(jsonRecipe.has("url")){
+                        jsonUrl = jsonRecipe.getString("url");
+                    }
 
-            ArrayList<String> ingredients = new ArrayList<>();
-            for(int j = 0; j < jsonIngredients.length(); j++){
-                ingredients.add(jsonIngredients.getString(j));
+                    RecipeEntry recipe = new RecipeEntry(jsonName, jsonImage, jsonTime, ingredients, jsonUrl);
+                    recipes.add(recipe);
+                }
             }
-            ArrayList<String> healthLabels = new ArrayList<>();
-            for(int j = 0; j < jsonHealthLabels.length(); j++){
-                healthLabels.add(jsonHealthLabels.getString(j));
-            }
-
-            Recipe recipe = new Recipe(jsonName, jsonImage, jsonTime, ingredients, jsonUrl, healthLabels);
-            recipes.add(recipe);
+        } else {
+            Log.e(NetworkUtils.class.getName(), "No results found.");
         }
 
         return recipes;

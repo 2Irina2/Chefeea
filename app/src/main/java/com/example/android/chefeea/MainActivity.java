@@ -21,10 +21,13 @@ import com.example.android.chefeea.Fragments.ShoppingListFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
 
-    public DrawerLayout mDrawerLayout;
-    private ListView mDrawerContentList;
+    @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+    @BindView(R.id.drawer_content) ListView mDrawerContentList;
 
     IconListItemAdapter mDrawerAdapter;
     List<IconListItem> mDrawerItemsList;
@@ -35,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ButterKnife.bind(this);
 
         if(savedInstanceState != null){
             currentFragmentNumber = savedInstanceState.getInt("fragmentIndex");
@@ -65,17 +70,15 @@ public class MainActivity extends AppCompatActivity {
      */
 
     private void initializeDrawer(){
-        mDrawerLayout = findViewById(R.id.drawer_layout);
-        mDrawerContentList = findViewById(R.id.drawer_content);
 
         mDrawerItemsList = new ArrayList<>();
 
         mDrawerItemsList.add(new IconListItem(getResources().getString(R.string.drawer_content_home),
-                R.drawable.ic_settings_black_24dp));
+                R.drawable.ic_home_black_24dp));
         mDrawerItemsList.add(new IconListItem(getResources().getString(R.string.drawer_content_recipes),
-                R.drawable.ic_settings_black_24dp));
+                R.drawable.ic_import_contacts_black_24dp));
         mDrawerItemsList.add(new IconListItem(getResources().getString(R.string.drawer_content_shopping_list),
-                R.drawable.ic_settings_black_24dp));
+                R.drawable.ic_format_list_bulleted_black_24dp));
 
         mDrawerAdapter = new IconListItemAdapter(this, R.layout.drawer_list_item, mDrawerItemsList);
         mDrawerContentList.setAdapter(mDrawerAdapter);

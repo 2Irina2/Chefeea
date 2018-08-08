@@ -5,6 +5,7 @@
     android:id="@+id/main_screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/fragmentsBackground"
     tools:context="com.example.android.chefeea.MainActivity">
 
     <Button
@@ -17,7 +18,13 @@
         android:layout_marginRight="@dimen/margin_end"
         android:layout_marginStart="@dimen/margin_start"
         android:text="@string/surprise_button_text"
+        android:textColor="@color/colorAccent"
+        android:textAllCaps="false"
         android:textSize="@dimen/surprise_button_text_size"
+        android:background="@color/colorLighter"
+        android:paddingRight="@dimen/home_surprise_padding_right"
+        android:paddingLeft="@dimen/home_surprise_padding_right"
+        android:paddingTop="@dimen/home_surprise_padding_top"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

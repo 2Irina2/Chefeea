@@ -11,11 +11,11 @@ import com.example.android.chefeea.Database.ShoppingListEntry;
 
 import java.util.List;
 
-public class MainViewModel extends AndroidViewModel {
+public class ShoppingListViewModel extends AndroidViewModel {
 
     private LiveData<List<ShoppingListEntry>> entries;
 
-    public MainViewModel(@NonNull Application application) {
+    public ShoppingListViewModel(@NonNull Application application) {
         super(application);
         entries = AppDatabase.getInstance(getApplication()).shoppingListEntryDao().loadAllShoppingListItems();
     }

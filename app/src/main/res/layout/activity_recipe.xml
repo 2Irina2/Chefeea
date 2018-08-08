@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.android.chefeea.RecipeActivity">
@@ -13,6 +14,7 @@
 
         <ImageView
             android:id="@+id/recipe_photo"
+            android:transitionName="@string/shared_element_transition_name"
             android:layout_width="match_parent"
             android:layout_height="@dimen/recipe_photo_height"
             android:contentDescription="@string/recipe_photo_content_description"
@@ -53,6 +55,7 @@
             android:layout_marginLeft="@dimen/recipe_ingredients_label_margin_left"
             android:text="@string/recipe_ingredients_label_text"
             android:textSize="@dimen/recipe_ingredients_label_text_size"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recipe_photo"
             android:layout_marginStart="@dimen/recipe_ingredients_label_margin_left" />
@@ -110,6 +113,8 @@
             android:layout_marginStart="@dimen/recipe_button_margin_start"
             android:layout_marginTop="@dimen/recipe_button_margin_top"
             android:text="@string/recipe_button_text"
+            android:background="@color/colorLighter"
+            android:textColor="@color/colorAccent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/details" />

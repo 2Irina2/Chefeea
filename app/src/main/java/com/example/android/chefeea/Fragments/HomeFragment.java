@@ -5,24 +5,20 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.example.android.chefeea.Classes.Recipe;
+import com.example.android.chefeea.Database.RecipeEntry;
 import com.example.android.chefeea.MainActivity;
 import com.example.android.chefeea.R;
 import com.example.android.chefeea.RecipeActivity;
 import com.example.android.chefeea.SettingsActivity;
 import com.example.android.chefeea.Utils.NetworkUtils;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
@@ -32,16 +28,19 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by irina on 12.12.2017.
  */
 
 public class HomeFragment extends Fragment{
 
-    private AdView mAdView;
-    private ImageView mMenuToggler;
-    private ImageView mSettingsToggler;
-    private Button mSurpriseRecipeButton;
+    @BindView(R.id.drawer_button) ImageView mMenuToggler;
+    @BindView(R.id.settings_button) ImageView mSettingsToggler;
+    @BindView(R.id.surprise_button) Button mSurpriseRecipeButton;
+    @BindView(R.id.adView) AdView mAdView;
 
     public final static char[] randomQueryParameters = new char[]{'b', 'c', 'd', 'e', 'f', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
 
@@ -54,10 +53,7 @@ public class HomeFragment extends Fragment{
                              @Nullable Bundle savedInstanceState) {
 
         final View view = inflater.inflate(R.layout.fragment_home, container, false);
-
-        mMenuToggler = view.findViewById(R.id.drawer_button);
-        mSettingsToggler = view.findViewById(R.id.settings_button);
-        mSurpriseRecipeButton = view.findViewById(R.id.surprise_button);
+        ButterKnife.bind(this, view);
 
         mMenuToggler.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +90,6 @@ public class HomeFragment extends Fragment{
         });
 
         MobileAds.initialize(getContext(),"ca-app-pub-3940256099942544/6300978111");
-        mAdView = view.findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
@@ -122,11 +117,12 @@ public class HomeFragment extends Fragment{
         protected void onPostExecute(String s) {
             if(s != null && !s.equals("")){
                 try {
-                    ArrayList<Recipe> recipes = NetworkUtils.parseJSONString(s);
+                    ArrayList<RecipeEntry> recipes = NetworkUtils.parseJSONString(s);
                     Intent surpriseIntent = new Intent(getContext(), RecipeActivity.class);
                     int randomRecipe = (int) (Math.random() * recipes.size());
                     surpriseIntent.putExtra(getResources().getString(R.string.recipe_intent_key),
                             recipes.get(randomRecipe));
+                    surpriseIntent.putExtra("showButton", true);
                     startActivity(surpriseIntent);
                 } catch (JSONException e) {
                     e.printStackTrace();

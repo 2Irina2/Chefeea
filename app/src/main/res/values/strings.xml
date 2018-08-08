@@ -29,7 +29,7 @@
     <string name="food_preference_title">Preference</string>
     <string name="food_preference_default_value">NON-VEG</string>
 
-    <!-- Strings used in Recipe Activity -->
+    <!-- Strings used in RecipeEntry Activity -->
     <string name="recipe_title">Recipe</string>
     <string name="recipe_photo_content_description">Dish photo</string>
     <string name="recipe_easy_content_description">Dish difficulty: easy</string>
@@ -57,4 +57,6 @@
     <!-- Strings used in AppWidget -->
     <string name="appwidget_text">Ingredients</string>
     <string name="add_widget">Add widget</string>
+
+    <string name="shared_element_transition_name">Shared element</string>
 </resources>

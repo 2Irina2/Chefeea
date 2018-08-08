@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#AFB42B</color>
+    <color name="colorPrimaryDark">#9E9D24</color>
+    <color name="colorAccent">#827717</color>
+    <color name="colorLighter">#F4FF81</color>
+    <color name="fragmentsBackground">#F0F4C3</color>
 
     <color name="recipe_details_url">#0000EE</color>
 </resources>
